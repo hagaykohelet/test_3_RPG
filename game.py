@@ -44,26 +44,35 @@ class Game:
             monster_attack = monster.attack(dice1)
             print(player_attack)
             print(monster_attack)
-            if monster_attack > player_attack:
-                attack = monster.attack(dice2)
+            while player.hp != 0 and monster.hp != 0:
+                if monster_attack > player_attack:
+                    attack = monster
+                    attacked = player
+                    check = monster.attack(dice2)
+                    if check > player.armor_rating:
+                        if monster.weapon == "knife":
+                            damage = monster.power * 0.5
+                            player.hp -= damage
 
-                if attack > player.armor_rating:
+                        elif monster.weapon == "sword":
+                            player.hp -= monster.power
 
-                    if monster.weapon == "knife":
-                        damage = monster.power * 0.5
-                        player.hp -= damage
+                        else:
+                            damage = monster.power * 1.5
+                            player.hp -= damage
+                        print(f"{monster.name} injury hp = {monster.hp}")
+                    else:
+                        print("miss your turn")
+                        attacked, attack = attack, attacked
+                elif player_attack > monster_attack:
+                    attack = player
+                    attacked = monster
+                    check = attack.attack(dice2)
+                    if check > monster.armor_rating:
 
-                    elif monster.weapon == "sword":
-                        player.hp -= monster.power
+                        monster.hp -= attack
+                        print(f"{monster.name} injury hp = {monster.hp}")
 
                     else:
-                        damage = monster.power * 1.5
-                        player.hp -= damage
-                    print(f"{monster.name} injury hp = {monster.hp}")
-
-            elif player_attack > monster_attack:
-                attack = player.attack(dice2)
-                if attack > monster.armor_rating:
-                    monster.hp -= attack
-                    print(f"{monster.name} injury hp = {monster.hp}")
-
+                        print("miss your turn")
+                        attacked, attack = attack, attacked
